@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== PROFESSIONAL DARK MODE ===== */
+
+.dark {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.dark body {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* ===== FORCE ALL BACKGROUNDS TO DARK FIRST ===== */
+
+/* Convert ALL white/light backgrounds to dark navy blue */
+.dark [class*="bg-white"],
+.dark [class*="bg-slate-"],
+.dark [class*="bg-gray-"] {
+  background-color: #1B263B !important;
+  color: #ffffff !important;
+}
+
+/* Pastel backgrounds to dark versions */
+.dark [class*="bg-emerald"],
+.dark [class*="bg-green"] {
+  background-color: #064e3b !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-blue"],
+.dark [class*="bg-indigo"] {
+  background-color: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-purple"],
+.dark [class*="bg-violet"] {
+  background-color: #581c87 !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-orange"],
+.dark [class*="bg-amber"] {
+  background-color: #7c2d12 !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-pink"],
+.dark [class*="bg-rose"] {
+  background-color: #831843 !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-yellow"],
+.dark [class*="bg-lime"] {
+  background-color: #713f12 !important;
+  color: #ffffff !important;
+}
+
+.dark [class*="bg-cyan"],
+.dark [class*="bg-teal"] {
+  background-color: #134e4a !important;
+  color: #ffffff !important;
+}
+
+/* ===== NOW FORCE ALL TEXT TO WHITE ===== */
+
+.dark * {
+  color: #ffffff !important;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: #ffffff !important;
+}
+
+.dark p,
+.dark span,
+.dark div,
+.dark li,
+.dark label,
+.dark a {
+  color: #ffffff !important;
+}
+
+/* ===== NAVIGATION ===== */
+.dark nav,
+.dark header {
+  background-color: #1B263B !important;
+}
+
+/* ===== FOOTER ===== */
+.dark footer {
+  background-color: #1B263B !important;
+}
+
+/* ===== BORDERS ===== */
+.dark [class*="border"] {
+  border-color: #2d3e56 !important;
+}
+
+/* ===== INPUTS ===== */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #1B263B !important;
+  color: #ffffff !important;
+  border: 1px solid #2d3e56 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* ===== BUTTONS ===== */
+.dark button {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+}
+
+/* ===== PROGRESS BARS - Keep original colors ===== */
+.dark .bg-green-500,
+.dark .bg-emerald-500 {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+.dark .bg-blue-500 {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.dark .bg-red-500 {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.dark .bg-yellow-500 {
+  background-color: #eab308 !important;
+  color: #000000 !important;
+}
+/* 🔒 Disable browser autofill yellow/beige background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #415A77 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+/* 🔥 FORCE REMOVE CHROME PASSWORD AUTOFILL STYLING */
+input,
+textarea,
+select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-internal-autofill-selected,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #415A77 inset !important;
+  box-shadow: 0 0 0 1000px #415A77 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  transition: background-color 9999s ease-out 0s;
+}
