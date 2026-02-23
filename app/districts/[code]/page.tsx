@@ -14,7 +14,7 @@ type Project = {
   budget: number | null
   progress: number | null
 }
-
+export const dynamic = "force-dynamic";
 export default async function DistrictDetailPage({
   params,
 }: {
