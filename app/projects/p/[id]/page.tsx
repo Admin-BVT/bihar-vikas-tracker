@@ -1,6 +1,6 @@
 export const runtime = "nodejs";
 import { notFound } from "next/navigation";
-
+import { supabasePublic } from "@/lib/supabasePublic";
 
 type Project = {
   id: string;
@@ -20,41 +20,26 @@ type Project = {
   video_url: string | null;
 };
 
-async function getProject(id: string): Promise<Project | null> {
-  const res = await fetch(
-  `/api/projects/${id}`,
-  { cache: "no-store" }
-);
 
-
-  if (!res.ok) return null;
-  return res.json();
-}
 export const dynamic = "force-dynamic";
 
 export default async function ProjectPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const id = params.id;
+  const { id } = await params;
 
-  if (!id) {
-    notFound();
-  }
+  if (!id) notFound();
 
-  const project = await getProject(id);
+  const { data: project } = await supabasePublic
+    .from("projects")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
 
-  if (!project) {
-    notFound();
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center text-white">
-        <div className="text-center">
-          <h1 className="text-3xl font-black mb-4">Project not found</h1>
-        </div>
-      </div>
-    );
-  }
+  if (!project) notFound();
+
 
 
   return (
