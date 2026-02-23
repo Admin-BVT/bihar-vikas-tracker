@@ -20,21 +20,21 @@ type Project = {
 
 async function getProject(id: string): Promise<Project | null> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/projects/${id}`,
-    { cache: "no-store" }
-  );
+  `/api/projects/${id}`,
+  { cache: "no-store" }
+);
 
 
   if (!res.ok) return null;
   return res.json();
 }
-
+export const dynamic = "force-dynamic";
 export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
 
 
