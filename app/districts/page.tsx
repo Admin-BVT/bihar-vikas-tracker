@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { supabasePublic } from '@/lib/supabasePublic'
-
+export const dynamic = "force-dynamic";
 
 import { districtRTO } from '@/lib/districtRTO'
 

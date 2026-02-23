@@ -5,15 +5,25 @@ import { isAdmin } from "@/lib/isAdmin";
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
-)
- {
+) {
   try {
- 
     const { id } = await context.params;
 
-    if (!id) {
+    // ✅ 1. Basic validation
+    if (!id || typeof id !== "string") {
       return NextResponse.json(
-        { error: "Project ID is required" },
+        { error: "Invalid project ID" },
+        { status: 400 }
+      );
+    }
+
+    // ✅ 2. Strict UUID validation (very important)
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(id)) {
+      return NextResponse.json(
+        { error: "Invalid project ID format" },
         { status: 400 }
       );
     }
@@ -22,9 +32,25 @@ export async function GET(
 
     const { data, error } = await supabase
       .from("projects")
-      .select("*")
+      .select(`
+        id,
+        name,
+        district,
+        category,
+        status,
+        budget,
+        progress,
+        beneficiaries,
+        implementing_agency,
+        start_date,
+        expected_end_date,
+        actual_completion_date,
+        notes,
+        image_url,
+        video_url
+      `) // ✅ removed "*"
       .eq("id", id)
-      .single();
+      .maybeSingle(); // ✅ safer than .single()
 
     if (error || !data) {
       return NextResponse.json(
@@ -35,8 +61,6 @@ export async function GET(
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("GET /api/projects/[id] failed:", error);
-
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

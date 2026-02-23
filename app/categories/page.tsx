@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { supabasePublic } from '@/lib/supabasePublic'
+export const dynamic = "force-dynamic";
 
 // SMART AUTO-SLUG GENERATOR - Works with ANY category name
 function getCategorySlug(category: string): string {
