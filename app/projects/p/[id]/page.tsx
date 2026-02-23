@@ -1,4 +1,6 @@
 export const runtime = "nodejs";
+import { notFound } from "next/navigation";
+
 
 type Project = {
   id: string;
@@ -29,18 +31,22 @@ async function getProject(id: string): Promise<Project | null> {
   return res.json();
 }
 export const dynamic = "force-dynamic";
+
 export default async function ProjectPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const id = params.id;
 
-
+  if (!id) {
+    notFound();
+  }
 
   const project = await getProject(id);
 
   if (!project) {
+    notFound();
     return (
       <div className="min-h-screen bg-black flex items-center justify-center text-white">
         <div className="text-center">
