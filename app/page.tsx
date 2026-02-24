@@ -5,7 +5,7 @@ import { supabasePublic } from "@/lib/supabasePublic"
 import { formatCompactINR, formatCompactNumber } from '@/lib/format'
 
 export default function HomePage() {
- supabasePublic.from("projects")
+
  const [projects, setProjects] = useState<any[]>([])
 
 useEffect(() => {
