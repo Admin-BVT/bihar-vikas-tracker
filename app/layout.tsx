@@ -45,7 +45,7 @@ export default function RootLayout({
     }),
   }}
 />
-      <body className={geistSans.className}>
+      <body className={`${geistSans.className} overflow-x-hidden`}>
         <Navbar />
         {children}
         <Footer />

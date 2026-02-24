@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabasePublic } from "@/lib/supabasePublic"
-
+import { formatCompactINR, formatCompactNumber } from '@/lib/format'
 
 export default function HomePage() {
  supabasePublic.from("projects")
@@ -81,13 +81,13 @@ const totalBeneficiaries = projects.reduce((sum, p) => sum + (p.beneficiaries ??
 
             <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-yellow-500 transition-all hover:scale-105 shadow-lg">
               <div className="text-5xl mb-4">💰</div>
-              <div className="text-4xl font-black text-white mb-2">₹{(totalBudget / 10000000000).toFixed(1)}K Cr</div>
+              <div className="text-4xl font-black text-white mb-2">{formatCompactINR(totalBudget)}</div>
               <div className="text-slate-300 font-semibold">Reported Total Investment</div>
             </div>
 
             <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-purple-500 transition-all hover:scale-105 shadow-lg">
               <div className="text-5xl mb-4">👥</div>
-              <div className="text-4xl font-black text-white mb-2">{(totalBeneficiaries / 1000000).toFixed(1)}M</div>
+              <div className="text-4xl font-black text-white mb-2">{formatCompactNumber(totalBeneficiaries)}</div>
               <div className="text-slate-300 font-semibold">Beneficiaries</div>
             </div>
           </div>

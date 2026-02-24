@@ -105,13 +105,13 @@ const completionRate = totalProjects
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Link href="/districts" className="inline-flex items-center text-[#B3AF8F] hover:text-white mb-4 font-semibold transition-colors">
             ← Back to All Districts
           </Link>
-          <div className="flex items-start justify-between">
+          <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex flex-wrap items-center gap-2 mb-2 min-w-0">
                 <h1 className="text-4xl md:text-5xl font-black text-white">
                   {districtName}
                 </h1>
@@ -125,7 +125,7 @@ const completionRate = totalProjects
       </section>
 {/* Stats Cards */}
 <section className="py-12 bg-black border-b border-slate-700">
-  <div className="container mx-auto px-6">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
     {/* 4 Stat Cards */}
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -207,7 +207,7 @@ const completionRate = totalProjects
 
       {/* Projects List */}
      <section className="py-16 bg-black">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
          <h2 className="text-3xl font-black text-[#B3AF8F] mb-8">
   All Projects in {districtName}
 </h2>
@@ -216,31 +216,26 @@ const completionRate = totalProjects
           <div className="grid gap-6">
             {projects.map((project) => (
   <Link
-    key={project.id}
-    href={`/projects/p/${project.id}`}
-   className="group block bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer"
-  >
-    <div className="flex items-start justify-between mb-4">
-      <div className="flex-1">
-        <div className="flex items-center gap-3 mb-2">
-          <h3 className="text-xl font-black text-white group-hover:text-[#60a5fa] transition-colors">
-            {project.name}
-          </h3>
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-bold ${
-              project.status === 'Completed'
-                ? 'bg-emerald-100 text-emerald-700'
-                : project.status === 'Ongoing'
-                ? 'bg-blue-100 text-blue-700'
-                : 'bg-red-100 text-red-700'
-            }`}
-          >
-            {project.status}
-          </span>
-        </div>
-      </div>
+  key={project.id}
+  href={`/projects/p/${project.id}`}>
+  <div className="group bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer">
+
+    <div className="flex flex-wrap items-center justify-between gap-2 mb-2 min-w-0">
+  <h3 className="text-xl font-black text-white break-words">
+    {project.name}
+  </h3>
+
+  <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-700 text-white whitespace-nowrap flex-shrink-0">
+    {project.status}
+  </span>
+</div>
+
+    <div className="text-sm text-slate-400">
+      {project.district} • {project.category}
     </div>
-  </Link>
+
+  </div>
+</Link>
 ))}      
           </div>
         </div>

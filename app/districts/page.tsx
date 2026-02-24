@@ -2,20 +2,10 @@ import Link from 'next/link'
 import { supabasePublic } from '@/lib/supabasePublic'
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
-
+import { formatCompactINR } from '@/lib/format'
 import { districtRTO } from '@/lib/districtRTO'
 
-function formatBudgetINR(amount: number) {
-  if (amount >= 1_00_00_000) {
-    return `₹${(amount / 1_00_00_000).toFixed(1)} Cr`
-  }
 
-  if (amount >= 1_00_000) {
-    return `₹${(amount / 1_00_000).toFixed(1)} L`
-  }
-
-  return `₹${amount.toLocaleString('en-IN')}`
-}
 
 export default async function DistrictsPage() {
 const supabase = supabasePublic
@@ -82,34 +72,55 @@ const districts = Object.values(districtMap).sort((a, b) =>
       </section>
 
       {/* Stats Overview */}
-      <section className="py-12 bg-black border-b border-slate-700">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-black text-[#60a5fa]">38</div>
-              <div className="text-sm text-slate-300 mt-1 font-semibold">Total Districts</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-black text-[#60a5fa]">
-                {districts.reduce((sum, d) => sum + d.projects, 0)}
-              </div>
-              <div className="text-sm text-slate-300 mt-1 font-semibold">Total Projects</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-black text-[#60a5fa]">
-                ₹{(districts.reduce((sum, d) => sum + d.totalBudget, 0) / 10000000000).toFixed(0)}K Cr
-              </div>
-              <div className="text-sm text-slate-300 mt-1 font-semibold">Reported Budget</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-black text-emerald-400">
-                {districts.reduce((sum, d) => sum + d.completedProjects, 0)}
-              </div>
-              <div className="text-sm text-slate-300 mt-1 font-semibold">Completed</div>
-            </div>
-          </div>
+<section className="py-12 bg-black border-b border-slate-700">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+
+      {/* Total Districts */}
+      <div className="bg-[#111827] border border-slate-700 rounded-xl p-4 sm:p-6 text-center">
+        <div className="text-2xl sm:text-4xl font-black text-[#60a5fa] break-words">
+          38
         </div>
-      </section>
+        <div className="text-xs sm:text-sm text-slate-300 mt-1 font-semibold">
+          Total Districts
+        </div>
+      </div>
+
+      {/* Total Projects */}
+      <div className="bg-[#111827] border border-slate-700 rounded-xl p-4 sm:p-6 text-center">
+        <div className="text-2xl sm:text-4xl font-black text-[#60a5fa] break-words">
+          {districts.reduce((sum, d) => sum + d.projects, 0)}
+        </div>
+        <div className="text-xs sm:text-sm text-slate-300 mt-1 font-semibold">
+          Total Projects
+        </div>
+      </div>
+
+      {/* Reported Budget */}
+      <div className="bg-[#111827] border border-slate-700 rounded-xl p-4 sm:p-6 text-center">
+        <div className="text-2xl sm:text-4xl font-black text-[#60a5fa] break-words">
+          {formatCompactINR(
+            districts.reduce((sum, d) => sum + d.totalBudget, 0)
+          )}
+        </div>
+        <div className="text-xs sm:text-sm text-slate-300 mt-1 font-semibold">
+          Reported Budget
+        </div>
+      </div>
+
+      {/* Completed */}
+      <div className="bg-[#111827] border border-slate-700 rounded-xl p-4 sm:p-6 text-center">
+        <div className="text-2xl sm:text-4xl font-black text-emerald-400 break-words">
+          {districts.reduce((sum, d) => sum + d.completedProjects, 0)}
+        </div>
+        <div className="text-xs sm:text-sm text-slate-300 mt-1 font-semibold">
+          Completed
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
       {/* Districts Grid */}
       <section className="py-16 bg-black">
@@ -128,7 +139,7 @@ const districts = Object.values(districtMap).sort((a, b) =>
 >
 
                   <div className="group bg-[#1B263B] border border-slate-700 rounded-lg p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer">
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                       <div>
                         <h3 className="text-xl font-black text-white group-hover:text-[#60a5fa] transition-colors">
                           {district.name}
@@ -148,7 +159,7 @@ const districts = Object.values(districtMap).sort((a, b) =>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-slate-300">Budget</span>
-                        <span className="font-bold text-white">{formatBudgetINR(district.totalBudget)}
+                        <span className="font-bold text-white">{formatCompactINR(district.totalBudget)}
 </span>
                       </div>
                     </div>

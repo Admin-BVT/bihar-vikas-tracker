@@ -79,7 +79,7 @@ export default function SearchPage() {
 
       {/* Header */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <p className="text-[#B3AF8F] font-bold text-sm mb-3 uppercase tracking-wider">
             Discover Projects
           </p>
@@ -94,7 +94,7 @@ export default function SearchPage() {
 
       {/* Filters */}
       <section className="py-8 bg-black border-b border-slate-700 ">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
           <div className="mb-6">
             <input
@@ -153,7 +153,7 @@ export default function SearchPage() {
 
       {/* Results */}
       <section className="py-12 bg-black">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
           {filteredProjects.length === 0 ? (
             <div className="text-center py-20">
@@ -170,7 +170,7 @@ export default function SearchPage() {
                 <Link key={project.id} href={`/projects/p/${project.id}`}>
                   <div className="group bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer">
 
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <h3 className="text-xl font-black text-white">
                         {project.name}
                       </h3>
