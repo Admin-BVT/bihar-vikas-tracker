@@ -1,7 +1,10 @@
-"use client";
 
+"use client";
 import { useState, useEffect, type FormEvent } from "react";
 import { CATEGORIES } from "@/lib/categories";
+import { useRouter } from "next/navigation";
+
+
 
 const DISTRICTS = [
   "Araria","Arwal","Aurangabad","Banka","Begusarai",
@@ -15,53 +18,35 @@ const DISTRICTS = [
 ];
 
 export default function AdminPage() {
+const router = useRouter();
+
+
 
   /* ---------- AUTH ---------- */
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+const [session, setSession] = useState<any>(null);
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [showPassword, setShowPassword] = useState(false);
+const [error, setError] = useState("");
+const [success, setSuccess] = useState("");
+const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/admin/check")
-      .then(res => res.json())
-      .then(data => {
-        if (data.authenticated) {
-          setIsAuthenticated(true);
-        }
-        setCheckingAuth(false);
-      });
-  }, []);
-
-  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError("");
-
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
+useEffect(() => {
+  async function checkAuth() {
+    const res = await fetch("/api/admin/check");
     const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error || "Login failed");
-      return;
+    if (data.authenticated) {
+      setSession(true);
+    } else {
+      setSession(null);
     }
-
-    window.location.reload();
   }
 
-  async function handleLogout() {
-    await fetch("/api/admin/logout", { method: "POST" });
-    window.location.reload();
-  }
+  checkAuth();
+}, []);
+
+
 
   /* ---------- PROJECT ---------- */
   const [projectName, setProjectName] = useState("");
@@ -82,6 +67,7 @@ export default function AdminPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
 
+  /* ---------- SUBMIT ---------- */
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -116,41 +102,62 @@ export default function AdminPage() {
         console.error("SERVER ERROR:", text);
         throw new Error("Save failed");
       }
+setSuccess("Project saved successfully ✅");
+setError("");
+setTimeout(() => setSuccess(""), 3000);
 
-      setSuccess("Project saved successfully ✅");
-      setError("");
-      setTimeout(() => setSuccess(""), 3000);
+    
+// Reset form fields
+setProjectName("");
+setDistrict("");
+setCategory("");
+setStatus("Ongoing");
 
-      setProjectName("");
-      setDistrict("");
-      setCategory("");
-      setStatus("Ongoing");
-      setBudget("");
-      setProgress("");
-      setStartDate("");
-      setExpectedEndDate("");
-      setActualCompletionDate("");
-      setBeneficiaries("");
-      setImplementingAgency("");
-      setNotes("");
-      setImageUrl("");
-      setVideoUrl("");
+setBudget("");
+setProgress("");
+
+setStartDate("");
+setExpectedEndDate("");
+setActualCompletionDate("");
+setBeneficiaries("");
+setImplementingAgency("");
+setNotes("");
+setImageUrl("");
+setVideoUrl("");
+
+setLoading(false);
 
     } catch (err) {
       console.error(err);
+      setLoading(false);
       alert("Failed to save project ❌");
     }
+  }
+async function handleLogout() {
+  await fetch("/api/admin/logout", { method: "POST" });
+  setSession(null);
+}
+async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-    setLoading(false);
+  const res = await fetch("/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    setError(data.error || "Login failed");
+    return;
   }
 
-  /* ---------- LOADING CHECK ---------- */
-  if (checkingAuth) {
-    return null;
-  }
+  setSession(true);
+}
 
   /* ---------- LOGIN UI ---------- */
-  if (!isAuthenticated) {
+  if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black px-4">
         <div className="bg-[#1B263B] p-6 rounded-2xl w-full max-w-sm">
@@ -196,7 +203,9 @@ export default function AdminPage() {
     );
   }
 
+
   /* ---------- ADMIN FORM ---------- */
+ 
   return (
     <div className="min-h-screen bg-black px-4 py-10">
       <div className="max-w-4xl mx-auto bg-[#1B263B] rounded-2xl p-6">
@@ -209,56 +218,171 @@ export default function AdminPage() {
             Logout
           </button>
         </div>
+<form
+  className="space-y-4"
+  onSubmit={handleSubmit}
+  autoComplete="off"
+>
 
-        <form className="space-y-4" onSubmit={handleSubmit} autoComplete="off">
 
-          <input
-            type="text"
-            className="w-full p-3 rounded-xl bg-[#415A77] text-white"
-            placeholder="Project Name"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-          />
+<input
+  type="text"
+  name="new-project-name"
+  autoComplete="new-password"
+  spellCheck={false}
+  className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+  placeholder="Project Name"
+  value={projectName}
+  onChange={(e) => setProjectName(e.target.value)}
+/>
+ 
+  <select
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={district}
+    onChange={(e) => setDistrict(e.target.value)}
+  >
+    <option value="">Select District</option>
+    {DISTRICTS.map((d) => (
+      <option key={d}>{d}</option>
+    ))}
+  </select>
 
-          <select
-            className="w-full p-3 rounded-xl bg-[#415A77] text-white"
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
-          >
-            <option value="">Select District</option>
-            {DISTRICTS.map((d) => (
-              <option key={d}>{d}</option>
-            ))}
-          </select>
+  <select
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+  >
+    <option value="">Select Category</option>
+    {CATEGORIES.map((c) => (
+      <option key={c}>{c}</option>
+    ))}
+  </select>
 
-          <select
-            className="w-full p-3 rounded-xl bg-[#415A77] text-white"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Select Category</option>
-            {CATEGORIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
+  <div>
+    <label className="block text-sm text-slate-300 mb-1">
+      Status
+    </label>
+    <select
+      className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+      value={status}
+      onChange={(e) => setStatus(e.target.value)}
+    >
+      <option value="">Select Status</option>
+      <option value="Ongoing">Ongoing</option>
+      <option value="Completed">Completed</option>
+      <option value="Delayed">Delayed</option>
+    </select>
+  </div>
 
-          {/* Remaining form stays unchanged */}
+  <input
+    type="number"
+    placeholder="Budget (₹)"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={budget}
+    onChange={(e) => setBudget(e.target.value)}
+  />
 
-          {success && (
-            <p className="text-green-400 text-sm text-center">
-              {success}
-            </p>
-          )}
+  <input
+    type="number"
+    placeholder="Progress (%)"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={progress}
+    onChange={(e) => setProgress(e.target.value)}
+  />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-emerald-500 text-white font-bold disabled:opacity-50"
-          >
-            {loading ? "Saving..." : "Save Project"}
-          </button>
+  <div className="grid md:grid-cols-3 gap-4 items-start">
 
-        </form>
+    <div>
+      <label className="block text-sm text-slate-300 mb-1">
+        Start Date
+      </label>
+      <input
+        type="date"
+        className="w-full h-[52px] p-3 rounded-xl bg-[#415A77] text-white"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm text-slate-300 mb-1">
+        Expected End Date
+      </label>
+      <input
+        type="date"
+        className="w-full h-[52px] p-3 rounded-xl bg-[#415A77] text-white"
+        value={expectedEndDate}
+        onChange={(e) => setExpectedEndDate(e.target.value)}
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm text-slate-300 mb-1">
+        Actual Completion Date
+      </label>
+      <input
+        type="date"
+        className="w-full h-[52px] p-3 rounded-xl bg-[#415A77] text-white"
+        value={actualCompletionDate}
+        onChange={(e) => setActualCompletionDate(e.target.value)}
+      />
+    </div>
+
+  </div>
+
+  <input
+    type="number"
+    placeholder="Beneficiaries"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={beneficiaries}
+    onChange={(e) => setBeneficiaries(e.target.value)}
+  />
+
+  <input
+    placeholder="Implementing Agency"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={implementingAgency}
+    onChange={(e) => setImplementingAgency(e.target.value)}
+  />
+
+  <textarea
+    placeholder="Notes"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={notes}
+    onChange={(e) => setNotes(e.target.value)}
+  />
+
+  <input
+    type="url"
+    placeholder="Image URL (optional)"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={imageUrl}
+    onChange={(e) => setImageUrl(e.target.value)}
+  />
+
+  <input
+    type="url"
+    placeholder="YouTube URL (optional)"
+    className="w-full p-3 rounded-xl bg-[#415A77] text-white"
+    value={videoUrl}
+    onChange={(e) => setVideoUrl(e.target.value)}
+  />
+{success && (
+  <p className="text-green-400 text-sm text-center">
+    {success}
+  </p>
+)}
+
+  <button
+  type="submit"
+  disabled={loading}
+  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-emerald-500 text-white font-bold disabled:opacity-50"
+>
+  {loading ? "Saving..." : "Save Project"}
+</button>
+
+
+</form>
       </div>
     </div>
   );
