@@ -1,29 +1,26 @@
-'use client'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { supabasePublic } from "@/lib/supabasePublic"
 import { formatCompactINR, formatCompactNumber } from '@/lib/format'
 
-export default function HomePage() {
+export const dynamic = "force-dynamic"
 
- const [projects, setProjects] = useState<any[]>([])
+export default async function HomePage() {
 
-useEffect(() => {
-  async function fetchProjects() {
-    const { data, error } = await supabasePublic
+  const { data: projects, error } = await supabasePublic
     .from("projects")
-      .select('*')
+    .select("*")
 
-    if (!error && data) setProjects(data)
-  }
+  if (error) {
+  console.error("SUPABASE ERROR:", JSON.stringify(error, null, 2))
+  throw new Error(error.message)
+}
 
-  fetchProjects()
-}, [])
+  const safeProjects = projects ?? []
 
-const totalProjects = projects.length
-const completedProjects = projects.filter(p => p.status === 'Completed').length
-const totalBudget = projects.reduce((sum, p) => sum + (p.budget ?? 0), 0)
-const totalBeneficiaries = projects.reduce((sum, p) => sum + (p.beneficiaries ?? 0), 0)
+  const totalProjects = safeProjects.length
+  const completedProjects = safeProjects.filter(p => p.status === 'Completed').length
+  const totalBudget = safeProjects.reduce((sum, p) => sum + (p.budget ?? 0), 0)
+  const totalBeneficiaries = safeProjects.reduce((sum, p) => sum + (p.beneficiaries ?? 0), 0)
 
   return (
     <div className="min-h-screen bg-black">
@@ -63,33 +60,40 @@ const totalBeneficiaries = projects.reduce((sum, p) => sum + (p.beneficiaries ??
         </div>
       </section>
 
+      
       {/* Stats Section */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-blue-500 transition-all hover:scale-105 shadow-lg">
+
+            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700">
               <div className="text-5xl mb-4">📊</div>
               <div className="text-4xl font-black text-white mb-2">{totalProjects}</div>
               <div className="text-slate-300 font-semibold">Total Projects</div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-emerald-500 transition-all hover:scale-105 shadow-lg">
+            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700">
               <div className="text-5xl mb-4">✅</div>
               <div className="text-4xl font-black text-white mb-2">{completedProjects}</div>
               <div className="text-slate-300 font-semibold">Completed</div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-yellow-500 transition-all hover:scale-105 shadow-lg">
+            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700">
               <div className="text-5xl mb-4">💰</div>
-              <div className="text-4xl font-black text-white mb-2">{formatCompactINR(totalBudget)}</div>
+              <div className="text-4xl font-black text-white mb-2">
+                {formatCompactINR(totalBudget)}
+              </div>
               <div className="text-slate-300 font-semibold">Reported Total Investment</div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700 hover:border-purple-500 transition-all hover:scale-105 shadow-lg">
+            <div className="bg-gradient-to-br from-[#1B263B] to-[#415A77] rounded-2xl p-8 border border-slate-700">
               <div className="text-5xl mb-4">👥</div>
-              <div className="text-4xl font-black text-white mb-2">{formatCompactNumber(totalBeneficiaries)}</div>
+              <div className="text-4xl font-black text-white mb-2">
+                {formatCompactNumber(totalBeneficiaries)}
+              </div>
               <div className="text-slate-300 font-semibold">Beneficiaries</div>
             </div>
+
           </div>
         </div>
       </section>
