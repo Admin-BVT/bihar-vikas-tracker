@@ -91,11 +91,12 @@ useEffect(() => {
     };
 
     try {
-      const res = await fetch("/api/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+   const res = await fetch("/api/projects", {
+  method: "POST",
+  credentials: "include",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
 
       if (!res.ok) {
         const text = await res.text();

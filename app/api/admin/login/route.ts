@@ -30,12 +30,12 @@ export async function POST(req: Request) {
 
   const response = NextResponse.json({ success: true });
 
-  response.cookies.set("admin-auth", data.session.access_token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-  });
+  response.cookies.set("admin-auth", "true", {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  path: "/",
+})
 
   return response;
 }
