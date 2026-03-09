@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { headers } from "next/headers";
+import { checkRateLimit } from "@/lib/rateLimit";
+
 
 const ADMIN_EMAILS = [
   "biharvikastracker@gmail.com",
@@ -15,7 +18,14 @@ export async function POST(req: Request) {
       { status: 403 }
     );
   }
+const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
 
+if (!checkRateLimit(ip)) {
+  return NextResponse.json(
+    { error: "Too many login attempts" },
+    { status: 429 }
+  );
+}
   const { data, error } = await supabaseAdmin().auth.signInWithPassword({
     email,
     password,
