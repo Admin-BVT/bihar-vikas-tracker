@@ -90,25 +90,25 @@ const categoryName =
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-3xl mb-2">📊</div>
-              <div className="text-3xl font-black text-white mb-1">{categoryProjects.length}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{categoryProjects.length}</div>
               <div className="text-slate-300 font-semibold">Total Projects</div>
             </div>
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-3xl mb-2">✅</div>
-              <div className="text-3xl font-black text-emerald-400 mb-1">{completedCount}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mb-1">{completedCount}</div>
               <div className="text-slate-300 font-semibold">Completed</div>
             </div>
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-3xl mb-2">🔄</div>
-              <div className="text-3xl font-black text-blue-400 mb-1">{ongoingCount}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-400 mb-1">{ongoingCount}</div>
               <div className="text-slate-300 font-semibold">Ongoing</div>
             </div>
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-3xl mb-2">⚠️</div>
-              <div className="text-3xl font-black text-red-400 mb-1">{delayedCount}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-red-400 mb-1">{delayedCount}</div>
               <div className="text-slate-300 font-semibold">Delayed</div>
             </div>
           </div>
@@ -116,7 +116,7 @@ const categoryName =
       </section>
 
       {/* Projects List */}
-      <section className="py-12 bg-black">
+      <section className="py-14 bg-black">
         <div className="container mx-auto px-6">
           <h2 className="text-2xl font-black text-white mb-8">All Projects</h2>
           

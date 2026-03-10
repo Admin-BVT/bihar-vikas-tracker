@@ -84,21 +84,21 @@ export default async function ProjectPage({
       Project Notes
     </h2>
 
-    <div className="bg-[#1B263B] border border-slate-700 rounded-xl overflow-hidden">
+    <div className="bg-[#1B263B] border border-slate-700 rounded-xl shadow-sm hover:shadow-lg overflow-hidden">
       <table className="w-full text-left">
         <thead className="bg-[#415A77] text-white text-sm uppercase tracking-wider">
           <tr>
-            <th className="px-6 py-4">Type</th>
-            <th className="px-6 py-4">Details</th>
+            <th className="px-5 py-3">Type</th>
+            <th className="px-5 py-3">Details</th>
           </tr>
         </thead>
 
         <tbody className="text-slate-300">
           <tr className="border-t border-slate-700 hover:bg-[#22304A] transition-colors">
-            <td className="px-6 py-4 font-semibold">
+            <td className="px-5 py-3 font-semibold">
               Description/About 
             </td>
-            <td className="px-6 py-4">
+            <td className="px-5 py-3">
               {project.notes}
             </td>
           </tr>

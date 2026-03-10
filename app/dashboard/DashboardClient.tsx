@@ -152,7 +152,7 @@ function formatNumber(value: number) {
       {/* STATUS OVERVIEW */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-8 flex items-center gap-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 flex items-center gap-3">
             📊 Project Status Overview
           </h2>
 
@@ -202,7 +202,7 @@ function formatNumber(value: number) {
       {/* TOP DISTRICTS */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-8">🏆 Top Districts (As per our records)</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">🏆 Top Districts (As per our records)</h2>
           <div className="grid md:grid-cols-5 gap-6">
           {topDistricts.length > 0 &&
   topDistricts.map(([d, c], i) => (
@@ -224,7 +224,7 @@ function formatNumber(value: number) {
 
       {/* CTA */}
       <section className="py-16 bg-black text-center">
-        <h2 className="text-3xl font-black text-white mb-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
           Explore More Details
         </h2>
         <div className="flex gap-4 justify-center">
@@ -261,7 +261,7 @@ function Metric({ icon, label, value }: any) {
         <span className="text-3xl">{icon}</span>
         <span className="text-xs text-slate-400 font-bold">{label}</span>
       </div>
-      <div className="text-3xl font-black text-white">{value}</div>
+      <div className="text-2xl sm:text-3xl font-bold text-white">{value}</div>
     </div>
   )
 }
@@ -277,7 +277,7 @@ function StatusCard({ icon, label, value, total }: any) {
           <div className="text-sm text-slate-300">Projects</div>
         </div>
       </div>
-      <h3 className="text-xl font-black text-white">{label}</h3>
+      <h3 className="text-lg sm:text-xl font-bold text-white">{label}</h3>
       <div className="text-sm text-white mt-2">
         {percent.toFixed(1)}% of total projects
       </div>

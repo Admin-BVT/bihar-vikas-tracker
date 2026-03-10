@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from "next/image"
+import Container from '@/components/Container'  
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <nav className="bg-gradient-to-r from-[#1B263B] to-[#415A77] text-white sticky top-0 z-50 shadow-lg border-b border-slate-700">
-      <div className="container mx-auto px-6">
+      <Container>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
@@ -126,7 +127,7 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
-      </div>
+      </Container>
     </nav>
   )
 }

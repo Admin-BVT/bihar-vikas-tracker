@@ -21,7 +21,7 @@ export default function TransparencyPage() {
       {/* Data Sources */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-8 flex items-center gap-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 flex items-center gap-3">
             <span className="text-4xl">📋</span>
             Our Data Sources
           </h2>
@@ -40,7 +40,7 @@ export default function TransparencyPage() {
                 <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
                   🏛️
                 </div>
-                <h3 className="text-xl font-black text-white">Government Portals</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white">Government Portals</h3>
               </div>
               <p className="text-slate-300 leading-relaxed">
                 Official Bihar government websites and departmental portals publishing development projects and budget allocations.
@@ -53,7 +53,7 @@ export default function TransparencyPage() {
                 <div className="w-14 h-14 bg-emerald-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
                   📄
                 </div>
-                <h3 className="text-xl font-black text-white">RTI Responses</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white">RTI Responses</h3>
               </div>
               <p className="text-slate-300 leading-relaxed">
                 Information made available through Right to Information (RTI) disclosures published by relevant departments.
@@ -66,7 +66,7 @@ export default function TransparencyPage() {
                 <div className="w-14 h-14 bg-purple-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
                   📰
                 </div>
-                <h3 className="text-xl font-black text-white">Press Releases</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white">Press Releases</h3>
               </div>
               <p className="text-slate-300 leading-relaxed">
                 Official press releases and public announcements regarding project launches, approvals, and completion updates.
@@ -79,7 +79,7 @@ export default function TransparencyPage() {
                 <div className="w-14 h-14 bg-orange-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
                   📑
                 </div>
-                <h3 className="text-xl font-black text-white">Public Documentation</h3>
+                <h3 className="text-lg sm:text-xl font-bold-white">Public Documentation</h3>
               </div>
               <p className="text-slate-300 leading-relaxed">
                 Budget documents, departmental publications, and publicly released datasets related to development initiatives.
@@ -92,7 +92,7 @@ export default function TransparencyPage() {
       {/* Review Process */}
       <section className="py-16 bg-black border-t border-slate-800">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-12 flex items-center gap-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-12 flex items-center gap-3">
             <span className="text-4xl">✅</span>
             Our Data Review Process
           </h2>

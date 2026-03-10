@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabasePublic } from '@/lib/supabasePublic'
 import { fromSlug } from "@/lib/slug";
-
-
+import Container from '@/components/Container'
+import ProjectListCard from "@/components/ProjectListCard"
 
 type Project = {
   id: string
@@ -105,7 +105,7 @@ const completionRate = totalProjects
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+       <Container>
           <Link href="/districts" className="inline-flex items-center text-[#B3AF8F] hover:text-white mb-4 font-semibold transition-colors">
             ← Back to All Districts
           </Link>
@@ -121,18 +121,18 @@ const completionRate = totalProjects
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 {/* Stats Cards */}
 <section className="py-12 bg-black border-b border-slate-700">
-  <div className="mx-auto max-w-7xl px-4 sm:px-6">
+  <Container>
 
     {/* 4 Stat Cards */}
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
       {/* Total Projects */}
-      <div className="bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:border-[#60a5fa] transition-all">
-        <div className="text-3xl font-black text-[#60a5fa]">
+      <div className="bg-[#1B263B] border border-slate-700 rounded-xl shadow-sm hover:shadow-lg p-6 hover:border-[#60a5fa] transition-all">
+        <div className="text-2xl sm:text-3xl font-bold text-[#60a5fa]">
           {totalProjects}
         </div>
         <div className="text-sm text-slate-300 mt-1 font-semibold">
@@ -141,8 +141,8 @@ const completionRate = totalProjects
       </div>
 
       {/* Completed */}
-      <div className="bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:border-emerald-400 transition-all">
-        <div className="text-3xl font-black text-emerald-400">
+      <div className="bg-[#1B263B] border border-slate-700 rounded-xl shadow-sm hover:shadow-lg p-6 hover:border-emerald-400 transition-all">
+        <div className="text-2xl sm:text-3xl font-bold text-emerald-400">
           {completedProjects}
         </div>
         <div className="text-sm text-slate-300 mt-1 font-semibold">
@@ -151,8 +151,8 @@ const completionRate = totalProjects
       </div>
 
       {/* Ongoing */}
-      <div className="bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:border-blue-400 transition-all">
-        <div className="text-3xl font-black text-blue-400">
+      <div className="bg-[#1B263B] border border-slate-700 rounded-xl shadow-sm hover:shadow-lg p-6 hover:border-blue-400 transition-all">
+        <div className="text-2xl sm:text-3xl font-bold text-blue-400">
           {ongoingProjects}
         </div>
         <div className="text-sm text-slate-300 mt-1 font-semibold">
@@ -161,8 +161,8 @@ const completionRate = totalProjects
       </div>
 
       {/* Delayed */}
-      <div className="bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:border-red-400 transition-all">
-        <div className="text-3xl font-black text-red-400">
+      <div className="bg-[#1B263B] border border-slate-700 rounded-xl shadow-sm hover:shadow-lg p-6 hover:border-red-400 transition-all">
+        <div className="text-2xl sm:text-3xl font-bold text-red-400">
           {delayedProjects}
         </div>
         <div className="text-sm text-slate-300 mt-1 font-semibold">
@@ -202,44 +202,25 @@ const completionRate = totalProjects
 
     </div>
 
-  </div>
+  </Container>
 </section>
 
-      {/* Projects List */}
-     <section className="py-16 bg-black">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-         <h2 className="text-3xl font-black text-[#B3AF8F] mb-8">
-  All Projects in {districtName}
-</h2>
+{/* Projects List */}
+<section className="py-16 bg-black">
+  <Container>
 
+    <h2 className="text-2xl sm:text-3xl font-bold text-[#B3AF8F] mb-8">
+      All Projects in {districtName}
+    </h2>
 
-          <div className="grid gap-6">
-            {projects.map((project) => (
-  <Link
-  key={project.id}
-  href={`/projects/p/${project.id}`}>
-  <div className="group bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer">
+    <div className="grid grid-cols-1 gap-6 w-full">
+      {projects.map((project) => (
+        <ProjectListCard key={project.id} project={project} />
+      ))}
+    </div>
 
-    <div className="flex flex-wrap items-center justify-between gap-2 mb-2 min-w-0">
-  <h3 className="text-xl font-black text-white break-words">
-    {project.name}
-  </h3>
-
-  <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-700 text-white whitespace-nowrap flex-shrink-0">
-    {project.status}
-  </span>
+  </Container>
+</section>
 </div>
-
-    <div className="text-sm text-slate-400">
-      {project.district} • {project.category}
-    </div>
-
-  </div>
-</Link>
-))}      
-          </div>
-        </div>
-      </section>
-    </div>
-  )
+)
 }

@@ -126,7 +126,7 @@ projects.forEach(project => {
               <div className="text-sm text-slate-300 font-semibold">Total Projects</div>
             </div>
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
-              <div className="text-3xl font-black text-[#60a5fa] mb-1 break-words leading-tight">
+              <div className="text-2xl sm:text-3xl font-bold text-[#60a5fa] mb-1 break-words leading-tight">
              {formatBudgetINR(
   projects.reduce((sum, p) => sum + (p.budget ?? 0), 0)
 )}
@@ -159,12 +159,12 @@ projects.forEach(project => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="text-5xl">{icon}</div>
                       <div className="text-right">
-                        <div className="text-3xl font-black text-white">{stats.count}</div>
+                        <div className="text-2xl sm:text-3xl font-bold text-white">{stats.count}</div>
                         <div className="text-xs text-slate-300 font-semibold">Projects</div>
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-black text-white mb-4 group-hover:text-[#60a5fa] transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-4 group-hover:text-[#60a5fa] transition-colors">
                       {category}
                     </h3>
 
@@ -218,7 +218,7 @@ projects.forEach(project => {
       {/* CTA */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-black text-white mb-4">Looking for Something Specific?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Looking for Something Specific?</h2>
           <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
             Use our advanced search to filter projects by district, status, and category.
           </p>

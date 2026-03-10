@@ -20,7 +20,7 @@ export default function AboutPage() {
       <section className="py-16 bg-black">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-black text-white mb-6 flex items-center gap-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 flex items-center gap-3">
               <span className="text-4xl">🎯</span>
               Our Mission
             </h2>
@@ -39,14 +39,14 @@ export default function AboutPage() {
       {/* What We Track */}
       <section className="py-16 bg-black border-t border-slate-800">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-12 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-12 text-center">
             What We Track
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-4xl mb-4">💰</div>
-             <h3 className="text-xl font-black text-white mb-2">Budget Information</h3>
+             <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Budget Information</h3>
 <p className="text-slate-300 text-sm">
 Reported allocation and expenditure figures as available from official sources
 </p>
@@ -55,7 +55,7 @@ Reported allocation and expenditure figures as available from official sources
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-black text-white mb-2">Project Status</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Project Status</h3>
 <p className="text-slate-300 text-sm">
 Latest publicly reported updates on project progress and completion
 </p>
@@ -64,7 +64,7 @@ Latest publicly reported updates on project progress and completion
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-4xl mb-4">👥</div>
-              <h3 className="text-xl font-black text-white mb-2">Beneficiary Figures</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Beneficiary Figures</h3>
 <p className="text-slate-300 text-sm">
 Reported number of individuals associated with each initiative, where disclosed
 </p>
@@ -73,7 +73,7 @@ Reported number of individuals associated with each initiative, where disclosed
 
             <div className="bg-[#1B263B] rounded-xl p-6 border border-slate-700">
               <div className="text-4xl mb-4">📍</div>
-              <h3 className="text-xl font-black text-white mb-2">Location Data</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Location Data</h3>
               <p className="text-slate-300 text-sm">District-wise and category-wise project mapping</p>
             </div>
           </div>
@@ -83,7 +83,7 @@ Reported number of individuals associated with each initiative, where disclosed
       {/* Values */}
       <section className="py-16 bg-black border-t border-slate-800">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-black text-white mb-12 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-12 text-center">
             Our Values
           </h2>
 
@@ -92,7 +92,7 @@ Reported number of individuals associated with each initiative, where disclosed
               <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-500 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
                 🔍
               </div>
-              <h3 className="text-xl font-black text-white mb-3">Transparency</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3">Transparency</h3>
               <p className="text-slate-300">
                 We organize and present publicly available government records in a structured format, with clear sourcing wherever applicable.
               </p>
@@ -102,7 +102,7 @@ Reported number of individuals associated with each initiative, where disclosed
               <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
                 ✅
               </div>
-              <h3 className="text-xl font-black text-white mb-3">Accuracy</h3>
+              <h3 className="text-lg sm:text-xl font-boldtext-white mb-3">Accuracy</h3>
               <p className="text-slate-300">
                 Data is reviewed against multiple official references when possible to reduce inconsistencies and improve reliability.
               </p>
@@ -112,7 +112,7 @@ Reported number of individuals associated with each initiative, where disclosed
               <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-500 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
                 🤝
               </div>
-              <h3 className="text-xl font-black text-white mb-3">Accountability</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3">Accountability</h3>
               <p className="text-slate-300">
                 By making project-level information accessible, we support independent review, discussion, and informed civic engagement.
               </p>
@@ -124,7 +124,7 @@ Reported number of individuals associated with each initiative, where disclosed
       {/* CTA */}
       <section className="py-16 bg-gradient-to-br from-[#1B263B] to-[#415A77]">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-black text-white mb-4">Start Exploring</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Start Exploring</h2>
           <p className="text-lg text-slate-200 mb-8 max-w-2xl mx-auto">
             Discover how development projects are shaping Bihar's future.
           </p>

@@ -17,7 +17,7 @@ export default async function AllProjectsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white p-10">
-      <h1 className="text-3xl font-black mb-6">All Projects</h1>
+      <h1 className="text-2xl sm:text-3xl font-boldmb-6">All Projects</h1>
 
       <div className="grid gap-4">
         {projects?.map(p => (

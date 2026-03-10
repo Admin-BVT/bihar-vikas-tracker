@@ -141,7 +141,7 @@ const districts = Object.values(districtMap).sort((a, b) =>
                   <div className="group bg-[#1B263B] border border-slate-700 rounded-lg p-6 hover:shadow-xl hover:border-[#60a5fa] transition-all cursor-pointer">
                     <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                       <div>
-                        <h3 className="text-xl font-black text-white group-hover:text-[#60a5fa] transition-colors">
+                        <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-[#60a5fa] transition-colors">
                           {district.name}
                         </h3>
                       </div>

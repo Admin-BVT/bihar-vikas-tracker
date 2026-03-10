@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import Container from '@/components/Container'  
+import ProjectListCard from '@/components/ProjectListCard'
 
 type Project = {
   id: string
@@ -56,26 +58,26 @@ export default function SearchClient({ projects }: { projects: Project[] }) {
 
       {/* HEADER */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <Container>
           <h1 className="text-4xl font-black text-white mb-4">
             Search & Filter
           </h1>
-        </div>
+       </Container>
       </section>
 
       {/* FILTERS */}
       <section className="py-8 bg-black border-b border-slate-700">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <Container>
 
           <input
             type="text"
             placeholder="Search by name, description or district..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-6 py-4 border-2 border-slate-700 rounded-xl bg-[#1B263B] text-white mb-6"
+            className="w-full px-5 py-3 border-2 border-slate-700 rounded-xl bg-[#1B263B] text-white mb-6"
           />
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
             <select
               value={selectedDistrict}
@@ -116,35 +118,26 @@ export default function SearchClient({ projects }: { projects: Project[] }) {
             Showing {filteredProjects.length} Projects
           </div>
 
-        </div>
+        </Container>
       </section>
 
       {/* RESULTS */}
-      <section className="py-12 bg-black">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="py-14 bg-black">
+        <Container>
 
           {filteredProjects.length === 0 ? (
             <div className="text-center py-20 text-white">
               No projects found
             </div>
           ) : (
-            <div className="grid gap-6">
-              {filteredProjects.map(project => (
-                <Link key={project.id} href={`/projects/p/${project.id}`}>
-                  <div className="bg-[#1B263B] border border-slate-700 rounded-xl p-6 hover:border-[#60a5fa] transition-all cursor-pointer">
-                    <h3 className="text-xl font-black text-white mb-2">
-                      {project.name}
-                    </h3>
-                    <p className="text-slate-400 text-sm">
-                      {project.district} • {project.category} • {project.status}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+            <div className="grid grid-cols-1 gap-6 w-full">
+            {filteredProjects.map(project => (
+  <ProjectListCard key={project.id} project={project} />
+))}
             </div>
           )}
 
-        </div>
+        </Container>
       </section>
 
     </div>
