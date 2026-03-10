@@ -62,12 +62,6 @@ function extractDateRange(text: string) {
   };
 }
 function handleAutoFill() {
-  function handleAIKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    handleAutoFill();
-  }
-}
 
   const name = extract("Project Name", aiInput);
   const districtValue = extract("District", aiInput);
@@ -108,6 +102,12 @@ if (statusValue === "Completed" && start && end) {
   setNotes(notesValue);
 
 categoryRef.current?.focus();
+}
+function handleAIKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    handleAutoFill();
+  }
 }
   /* ---------- AUTH ---------- */
 const [session, setSession] = useState<any>(null);
