@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { CATEGORIES } from "@/lib/categories";
@@ -61,18 +60,16 @@ function extractDateRange(text: string) {
     end: normalizeDate(match[2]),
   };
 }
-function handleAutoFill() {
+function processBlock(block: string) {
 
-  const name = extract("Project Name", aiInput);
-  const districtValue = extract("District", aiInput);
-  const statusValue = extract("Status", aiInput);
-  const budgetValue = extract("Budget", aiInput);
-  const progressValue = extract("Progress", aiInput);
-  const startDateValue = extract("Start Date", aiInput);
-  const actualCompletionValue = extract("Actual Completion Date", aiInput);
-  const notesValue = extract("Notes", aiInput);
-/* ---------- PROJECT ---------- */
-
+  const name = extract("Project Name", block);
+  const districtValue = extract("District", block);
+  const statusValue = extract("Status", block);
+  const budgetValue = extract("Budget", block);
+  const progressValue = extract("Progress", block);
+  const startDateValue = extract("Start Date", block);
+  const actualCompletionValue = extract("Actual Completion Date", block);
+  const notesValue = extract("Notes", block);
 
   setProjectName(name);
   setDistrict(districtValue);
@@ -80,28 +77,49 @@ function handleAutoFill() {
 
   const cleanBudget = budgetValue.replace(/[₹,]/g, "");
   setBudget(cleanBudget);
-if (statusValue === "Completed") {
-  setProgress("100");
-} else {
-  setProgress(progressValue);
-}
- const { start, end } = extractDateRange(aiInput);
 
-if (statusValue === "Completed" && start && end) {
-  setStartDate(start);
-  setActualCompletionDate(end);
-} else {
-  if (startDateValue) {
-    setStartDate(normalizeDate(startDateValue));
+  if (statusValue === "Completed") {
+    setProgress("100");
+  } else {
+    setProgress(progressValue);
   }
 
-  if (actualCompletionValue && statusValue === "Completed") {
-    setActualCompletionDate(normalizeDate(actualCompletionValue));
+  const { start, end } = extractDateRange(block);
+
+  if (statusValue === "Completed" && start && end) {
+    setStartDate(start);
+    setActualCompletionDate(end);
+  } else {
+    if (startDateValue) setStartDate(normalizeDate(startDateValue));
+    if (actualCompletionValue) setActualCompletionDate(normalizeDate(actualCompletionValue));
   }
-}
+
   setNotes(notesValue);
 
-categoryRef.current?.focus();
+  categoryRef.current?.focus();
+}
+
+function handleAutoFill() {
+
+  if (projectQueue.length === 0) {
+
+    const blocks = aiInput
+      .split(/\n\d+\.\n/)
+      .map(b => b.trim())
+      .filter(Boolean);
+
+    if (blocks.length === 0) return;
+
+    setProjectQueue(blocks);
+    setCurrentIndex(0);
+
+    processBlock(blocks[0]);
+
+  } else {
+
+    processBlock(projectQueue[currentIndex]);
+
+  }
 }
 function handleAIKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
   if (e.key === "Enter" && !e.shiftKey) {
@@ -136,7 +154,8 @@ useEffect(() => {
 
 
   /* ---------- PROJECT ---------- */
-
+  const [projectQueue, setProjectQueue] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [projectName, setProjectName] = useState("");
   const [district, setDistrict] = useState("");
   const [category, setCategory] = useState("");
@@ -154,7 +173,6 @@ useEffect(() => {
 
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-
   /* ---------- SUBMIT ---------- */
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -213,7 +231,20 @@ setImplementingAgency("");
 setNotes("");
 setImageUrl("");
 setVideoUrl("");
-setAiInput("");
+if (projectQueue.length > 0 && currentIndex + 1 < projectQueue.length) {
+
+  const next = currentIndex + 1;
+  setCurrentIndex(next);
+
+  processBlock(projectQueue[next]);
+
+} else {
+
+  setAiInput("");
+  setProjectQueue([]);
+  setCurrentIndex(0);
+
+}
 aiInputRef.current?.focus();
 setLoading(false);
 
