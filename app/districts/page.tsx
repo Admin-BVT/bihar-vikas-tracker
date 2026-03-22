@@ -65,9 +65,9 @@ const districts = Object.values(districtMap).sort((a, b) =>
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
             Bihar Districts
           </h1>
-          <p className="text-slate-200 text-lg max-w-2xl">
-          Explore development initiatives across Bihar’s districts with structured public data and periodic updates.
-          </p>
+          <p className="text-slate-300 max-w-2xl">
+Explore all government and development projects across Bihar districts, including budgets, status, and sector-wise distribution.
+</p>
         </div>
       </section>
 

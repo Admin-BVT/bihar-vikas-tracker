@@ -14,6 +14,14 @@ type Project = {
   budget: number | null
   progress: number | null
 }
+export async function generateMetadata({ params }: { params: { code: string } }) {
+  const districtName = fromSlug(params.code)
+
+  return {
+    title: `${districtName} Development Projects | Bihar Vikas Tracker`,
+    description: `Explore all government and development projects in ${districtName}, including budgets, status, and sector-wise insights.`,
+  }
+}
 export const dynamic = "force-dynamic";
 export default async function DistrictDetailPage({
   params,

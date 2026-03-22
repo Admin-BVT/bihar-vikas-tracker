@@ -16,15 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata = {
-  title: "Bihar Vikas Tracker",
-  description:
-    "Independent civic data platform structuring publicly available development data across Bihar.",
-  icons: {
-    icon: "/branding/favicon.ico",
-    apple: "/apple-icon.png",
-  },
-}
+
 
 export default function RootLayout({
   children,
@@ -40,8 +32,8 @@ export default function RootLayout({
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "Bihar Vikas Tracker",
-      url: "https://yourdomain.com",
-      logo: "https://yourdomain.com/branding/logo-192.png",
+      url: "https://biharvikastracker.in",
+      logo: "https://biharvikastracker.in/branding/logo-192.png",
     }),
   }}
 />
@@ -53,4 +45,19 @@ export default function RootLayout({
     </html>
   )
 }
-
+export const metadata = {
+  title: "Bihar Vikas Tracker",
+  description:
+    "Track development projects across Bihar districts with structured public data, budgets, and progress insights.",
+  keywords: [
+    "Bihar development",
+    "Bihar projects",
+    "government schemes Bihar",
+    "Bihar district data",
+    "public data Bihar"
+  ],
+  icons: {
+    icon: "/branding/favicon.ico",
+    apple: "/apple-icon.png",
+  },
+}

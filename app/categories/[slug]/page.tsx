@@ -2,6 +2,17 @@ import Link from 'next/link'
 import { supabasePublic } from '@/lib/supabasePublic'
 import { notFound } from 'next/navigation'
   
+import { fromSlug } from "@/lib/slug"
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const category = fromSlug(params.slug)
+
+  return {
+    title: `${category} Projects in Bihar | Bihar Vikas Tracker`,
+    description: `Explore all ${category.toLowerCase()} related development projects across Bihar districts with budgets and status.`,
+  }
+}
+
  function formatBudgetINR(amount: number) {
   if (amount >= 1_00_00_000) {
     return `₹${(amount / 1_00_00_000).toFixed(1)} Cr`
@@ -17,9 +28,9 @@ export const dynamic = "force-dynamic";
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }) {
-  const { slug } = await params
+  const { slug } = params
 
   const supabase = supabasePublic
 
@@ -66,7 +77,8 @@ const categoryName =
     )
   }
 
-  const totalBudget = categoryProjects.reduce((sum, p) => sum + p.budget, 0)
+
+  const totalBudget = categoryProjects.reduce((sum, p) => sum + (p.budget ?? 0), 0)
   const completedCount = categoryProjects.filter(p => p.status === 'Completed').length
   const ongoingCount = categoryProjects.filter(p => p.status === 'Ongoing').length
   const delayedCount = categoryProjects.filter(p => p.status === 'Delayed').length
@@ -114,6 +126,13 @@ const categoryName =
           </div>
         </div>
       </section>
+      <h1 className="text-3xl font-black text-white mb-4">
+  {categoryName} Projects in Bihar
+</h1>
+
+<p className="text-slate-300 max-w-2xl mb-6">
+  This page lists all {categoryName.toLowerCase()} projects across Bihar, including district-wise distribution, budget allocation, and implementation status.
+</p>
 
       {/* Projects List */}
       <section className="py-14 bg-black">

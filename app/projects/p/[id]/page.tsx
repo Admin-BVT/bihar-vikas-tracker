@@ -1,6 +1,7 @@
 export const runtime = "nodejs";
 import { notFound } from "next/navigation";
 import { supabasePublic } from "@/lib/supabasePublic";
+import Script from "next/script";
 
 type Project = {
   id: string;
@@ -19,16 +20,49 @@ type Project = {
   image_url: string | null;
   video_url: string | null;
 };
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { data: project } = await supabasePublic
+    .from("projects")
+    .select("name, district, category, status")
+    .eq("id", params.id)
+    .maybeSingle();
 
+  if (!project) {
+    return {
+      title: "Project Not Found | Bihar Vikas Tracker",
+    };
+  }
+
+  return {
+    title: `${project.name} | Bihar Vikas Tracker`,
+    description: `Detailed status of ${project.name} in ${project.district} under ${project.category}. Current status: ${project.status}.`,
+
+    alternates: {
+  canonical: `https://biharvikastracker.in/projects/p/${params.id}`,
+},
+
+    openGraph: {
+      title: project.name,
+      description: `Development project in ${project.district ?? "Bihar"} under ${project.category ?? "public infrastructure"}.`,
+      url: `https://biharvikastracker.in/projects/p/${params.id}`,
+      siteName: "Bihar Vikas Tracker",
+      type: "article",
+    },
+  };
+}
 
 export const dynamic = "force-dynamic";
 
 export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   if (!id) notFound();
 
@@ -44,6 +78,23 @@ export default async function ProjectPage({
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <Script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "GovernmentService",
+      name: project.name,
+      areaServed: project.district,
+      serviceType: project.category,
+      provider: {
+        "@type": "Organization",
+        name: "Bihar Vikas Tracker",
+      },
+    }),
+  }}
+/>
+      
       {/* HERO */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
         <div className="container mx-auto px-6">
