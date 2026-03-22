@@ -1,7 +1,7 @@
 export const runtime = "nodejs";
 import { notFound } from "next/navigation";
 import { supabasePublic } from "@/lib/supabasePublic";
-import Script from "next/script";
+import Link from 'next/link'
 
 type Project = {
   id: string;
@@ -20,49 +20,55 @@ type Project = {
   image_url: string | null;
   video_url: string | null;
 };
+
+
+export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
+
   const { data: project } = await supabasePublic
     .from("projects")
-    .select("name, district, category, status")
-    .eq("id", params.id)
-    .maybeSingle();
+    .select("name, district, category")
+    .eq("id", id)
+    .maybeSingle()
 
   if (!project) {
     return {
       title: "Project Not Found | Bihar Vikas Tracker",
-    };
+    }
   }
 
+  const title = `${project.name} | ${project.district} | Bihar Vikas Tracker`
+
+  const description = `Detailed information about ${project.name}, a ${project.category.toLowerCase()} project in ${project.district}, Bihar. Includes budget, progress, and implementation details.`
+
   return {
-    title: `${project.name} | Bihar Vikas Tracker`,
-    description: `Detailed status of ${project.name} in ${project.district} under ${project.category}. Current status: ${project.status}.`,
+    title,
+    description,
 
     alternates: {
-  canonical: `https://biharvikastracker.in/projects/p/${params.id}`,
-},
+      canonical: `https://biharvikastracker.in/projects/p/${id}`,
+    },
 
     openGraph: {
-      title: project.name,
-      description: `Development project in ${project.district ?? "Bihar"} under ${project.category ?? "public infrastructure"}.`,
-      url: `https://biharvikastracker.in/projects/p/${params.id}`,
+      title,
+      description,
+      url: `https://biharvikastracker.in/projects/p/${id}`,
       siteName: "Bihar Vikas Tracker",
       type: "article",
     },
-  };
+  }
 }
-
-export const dynamic = "force-dynamic";
-
 export default async function ProjectPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
 
   if (!id) notFound();
 
@@ -78,22 +84,6 @@ export default async function ProjectPage({
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "GovernmentService",
-      name: project.name,
-      areaServed: project.district,
-      serviceType: project.category,
-      provider: {
-        "@type": "Organization",
-        name: "Bihar Vikas Tracker",
-      },
-    }),
-  }}
-/>
       
       {/* HERO */}
       <section className="bg-gradient-to-br from-[#1B263B] to-[#415A77] py-16">
@@ -101,6 +91,9 @@ export default async function ProjectPage({
           <h1 className="text-4xl md:text-5xl font-black mb-4">
             {project.name}
           </h1>
+          <p className="text-slate-400 mt-2 text-sm">
+  {project.category} project in {project.district}, Bihar
+</p>
           <div className="flex flex-wrap gap-3 text-sm">
             <Badge>{project.status}</Badge>
             <Badge>{project.category}</Badge>
@@ -108,6 +101,18 @@ export default async function ProjectPage({
           </div>
         </div>
       </section>
+      <section className="py-6 bg-black">
+  <div className="container mx-auto px-6">
+
+    <Link
+      href={`/districts/${project.district!.toLowerCase().replace(/\s+/g, '-')}`}
+      className="text-blue-400 hover:text-blue-300 font-semibold"
+    >
+      View all projects in {project.district} →
+    </Link>
+
+  </div>
+</section>
 
       {/* METRICS */}
       <section className="container mx-auto px-6 py-12 grid md:grid-cols-4 gap-6">

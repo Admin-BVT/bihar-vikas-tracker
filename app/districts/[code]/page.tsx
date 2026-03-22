@@ -14,12 +14,13 @@ type Project = {
   budget: number | null
   progress: number | null
 }
-export async function generateMetadata({ params }: { params: { code: string } }) {
-  const districtName = fromSlug(params.code)
+export async function generateMetadata({ params }: { params: Promise<{ code: string }> }) {
+  const { code } = await params
+  const district = code?.replace(/-/g, ' ') || 'District'
 
   return {
-    title: `${districtName} Development Projects | Bihar Vikas Tracker`,
-    description: `Explore all government and development projects in ${districtName}, including budgets, status, and sector-wise insights.`,
+    title: `${district} District Projects | Bihar Vikas Tracker`,
+    description: `Explore all development projects in ${district}, Bihar including budgets, status and progress.`,
   }
 }
 export const dynamic = "force-dynamic";

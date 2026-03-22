@@ -4,8 +4,9 @@ import { notFound } from 'next/navigation'
   
 import { fromSlug } from "@/lib/slug"
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const category = fromSlug(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const category = fromSlug(slug)
 
   return {
     title: `${category} Projects in Bihar | Bihar Vikas Tracker`,
@@ -13,7 +14,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
- function formatBudgetINR(amount: number) {
+function formatBudgetINR(amount: number | null | undefined) {
+  if (amount === null || amount === undefined) return "—"
+
   if (amount >= 1_00_00_000) {
     return `₹${(amount / 1_00_00_000).toFixed(1)} Cr`
   }
@@ -28,9 +31,9 @@ export const dynamic = "force-dynamic";
 export default async function CategoryPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const { slug } = params
+  const { slug } = await params
 
   const supabase = supabasePublic
 
@@ -126,13 +129,21 @@ const categoryName =
           </div>
         </div>
       </section>
-      <h1 className="text-3xl font-black text-white mb-4">
-  {categoryName} Projects in Bihar
-</h1>
+     <section className="py-12 sm:py-14 bg-black border-b border-slate-800">
+  <div className="container mx-auto px-6">
 
-<p className="text-slate-300 max-w-2xl mb-6">
-  This page lists all {categoryName.toLowerCase()} projects across Bihar, including district-wise distribution, budget allocation, and implementation status.
-</p>
+    <div className="max-w-3xl">
+      <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
+        {categoryName} Projects in Bihar
+      </h1>
+
+      <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+        This page lists all {categoryName.toLowerCase()} projects across Bihar, including district-wise distribution, budget allocation, and implementation status.
+      </p>
+    </div>
+
+  </div>
+</section>
 
       {/* Projects List */}
       <section className="py-14 bg-black">
@@ -149,7 +160,11 @@ const categoryName =
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <h3 className="text-xl md:text-2xl font-black text-white mb-3">{project.name}</h3>
-                      <p className="text-slate-300 leading-relaxed mb-4">{project.description}</p>
+                      {project.description && (
+  <p className="text-slate-300 leading-relaxed mb-4">
+    {project.description}
+  </p>
+)}
                     </div>
                     <div className="flex-shrink-0">
                       <span className={`inline-block px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap ${
