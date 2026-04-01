@@ -5,6 +5,7 @@ import Script from "next/script"
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,6 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
       <Script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
@@ -37,10 +39,12 @@ export default function RootLayout({
     }),
   }}
 />
+</head>
       <body className={`${geistSans.className} overflow-x-hidden`}>
         <Navbar />
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
