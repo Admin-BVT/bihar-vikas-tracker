@@ -36,6 +36,7 @@ export async function GET(
         id,
         name,
         district,
+        block,
         category,
         status,
         budget,

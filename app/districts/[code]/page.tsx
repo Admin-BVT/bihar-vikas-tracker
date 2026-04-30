@@ -4,6 +4,7 @@ import { supabasePublic } from '@/lib/supabasePublic'
 import { fromSlug } from "@/lib/slug";
 import Container from '@/components/Container'
 import ProjectListCard from "@/components/ProjectListCard"
+import BlockFilter from "@/components/BlockFilter";
 
 type Project = {
   id: string
@@ -222,11 +223,7 @@ const completionRate = totalProjects
       All Projects in {districtName}
     </h2>
 
-    <div className="grid grid-cols-1 gap-6 w-full">
-      {projects.map((project) => (
-        <ProjectListCard key={project.id} project={project} />
-      ))}
-    </div>
+    <BlockFilter projects={projects} />
 
   </Container>
 </section>

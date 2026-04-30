@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Project } from '@/types'
 
+
 interface ProjectCardProps {
   project: Project
 }
@@ -41,7 +42,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
         
         <p className="text-sm text-slate-600 mb-5 font-medium">
-          {project.category} • {project.district}
+          {project.category} • {project.district} • {project.block}
         </p>
         
         <div className="space-y-4">

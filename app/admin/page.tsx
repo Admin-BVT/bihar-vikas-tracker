@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { CATEGORIES } from "@/lib/categories";
 import { useRouter } from "next/navigation";
-
+import { BLOCKS_BY_DISTRICT } from "@/data/blocks"
 
 
 const DISTRICTS = [
@@ -15,7 +15,6 @@ const DISTRICTS = [
   "Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan",
   "Supaul","Vaishali","West Champaran"
 ];
-
 
 export default function AdminPage() {
 const router = useRouter();
@@ -60,49 +59,46 @@ function extractDateRange(text: string) {
     end: normalizeDate(match[2]),
   };
 }
-function processBlock(block: string) {
+function processBlock(blockText: string) {
+  const name = extract("Project Name", blockText);
+  const districtValue = extract("District", blockText);
+  const statusValue = extract("Status", blockText);
+  const budgetValue = extract("Budget", blockText);
+  const progressValue = extract("Progress", blockText);
+  const startDateValue = extract("Start Date", blockText);
+  const actualCompletionValue = extract("Actual Completion Date", blockText);
+  const notesValue = extract("Notes", blockText);
+setProjectName(name);
+setDistrict(districtValue);
+setStatus(statusValue);
 
-  const name = extract("Project Name", block);
-  const districtValue = extract("District", block);
-  const statusValue = extract("Status", block);
-  const budgetValue = extract("Budget", block);
-  const progressValue = extract("Progress", block);
-  const startDateValue = extract("Start Date", block);
-  const actualCompletionValue = extract("Actual Completion Date", block);
-  const notesValue = extract("Notes", block);
+const cleanBudget = budgetValue.replace(/[₹,]/g, "");
+setBudget(cleanBudget);
 
-  setProjectName(name);
-  setDistrict(districtValue);
-  setStatus(statusValue);
+setProgress(statusValue === "Completed" ? "100" : progressValue);
 
-  const cleanBudget = budgetValue.replace(/[₹,]/g, "");
-  setBudget(cleanBudget);
+const { start, end } = extractDateRange(blockText);
 
-  if (statusValue === "Completed") {
-    setProgress("100");
-  } else {
-    setProgress(progressValue);
-  }
-
-  const { start, end } = extractDateRange(block);
-
-  if (statusValue === "Completed" && start && end) {
-    setStartDate(start);
-    setActualCompletionDate(end);
-  } else {
-    if (startDateValue) setStartDate(normalizeDate(startDateValue));
-    if (actualCompletionValue) setActualCompletionDate(normalizeDate(actualCompletionValue));
-  }
-
-  setNotes(notesValue);
-
-  categoryRef.current?.focus();
+if (statusValue === "Completed" && start && end) {
+  setStartDate(start);
+  setActualCompletionDate(end);
+} else {
+  if (startDateValue) setStartDate(normalizeDate(startDateValue));
+  if (actualCompletionValue) setActualCompletionDate(normalizeDate(actualCompletionValue));
 }
 
+setNotes(notesValue);
+
+// ✅ block extraction
+const blockMatch = blockText.match(/Block[-:\s]+([A-Za-z\s]+)/i);
+if (blockMatch) {
+  setBlock(blockMatch[1].trim());
+}
+
+categoryRef.current?.focus();
+}
 function handleAutoFill() {
-
   if (projectQueue.length === 0) {
-
     const blocks = aiInput
       .split(/\n\d+\.\n/)
       .map(b => b.trim())
@@ -114,19 +110,20 @@ function handleAutoFill() {
     setCurrentIndex(0);
 
     processBlock(blocks[0]);
-
   } else {
-
     processBlock(projectQueue[currentIndex]);
-
   }
 }
+
 function handleAIKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     handleAutoFill();
   }
 }
+
+
+  
   /* ---------- AUTH ---------- */
 const [session, setSession] = useState<any>(null);
 const [email, setEmail] = useState("");
@@ -158,6 +155,7 @@ useEffect(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [projectName, setProjectName] = useState("");
   const [district, setDistrict] = useState("");
+  const [block, setBlock] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Ongoing");
 
@@ -182,6 +180,7 @@ useEffect(() => {
     const payload = {
       name: projectName,
       district,
+      block,
       category,
       status,
       budget: budget ? Number(budget) : null,
@@ -195,6 +194,10 @@ useEffect(() => {
       image_url: imageUrl || null,
       video_url: videoUrl || null,
     };
+    if (!district || !block) {
+  alert("Please select district and block");
+  return;
+}
 
     try {
    const res = await fetch("/api/projects", {
@@ -267,6 +270,7 @@ async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     body: JSON.stringify({ email, password }),
   });
 
+  
   const data = await res.json();
 
   if (!res.ok) {
@@ -383,13 +387,32 @@ async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
   <select
     className="w-full p-3 rounded-xl bg-[#415A77] text-white"
     value={district}
-    onChange={(e) => setDistrict(e.target.value)}
+    onChange={(e) => {
+  setDistrict(e.target.value);
+  setBlock(""); 
+}}
   >
     <option value="">Select District</option>
     {DISTRICTS.map((d) => (
       <option key={d}>{d}</option>
     ))}
   </select>
+  <select
+  value={block}
+  onChange={(e) => setBlock(e.target.value)}
+  disabled={!district}
+  className="w-full p-3 rounded-xl bg-[#415A77] text-white disabled:opacity-50"
+>
+  <option value="" disabled>
+  Select Block
+</option>
+{district &&
+  (BLOCKS_BY_DISTRICT[district.toLowerCase()] || []).map((b: string) => (
+    <option key={b} value={b}>
+      {b}
+    </option>
+))}
+</select>
 
   <select
   ref={categoryRef}
